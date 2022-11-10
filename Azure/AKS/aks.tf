@@ -1,30 +1,30 @@
 resource "random_pet" "prefix" {}
 
 resource "azurerm_resource_group" "default" {
-  name     = "${random_pet.prefix.id}-rg"
+  name     = "fg1-${random_pet.prefix.id}-rg"
   location = var.location.value
 }
 
 resource "azurerm_virtual_network" "default" {
-  name                = "${random_pet.prefix.id}-vnet"
+  name                = "fg1-${random_pet.prefix.id}-vnet"
   location            = var.location.value
   resource_group_name = azurerm_resource_group.default.name
   address_space       = ["10.0.0.0/8"]
 }
 
 resource "azurerm_subnet" "subnet" {
-  name                 = "${random_pet.prefix.id}-subnet"
+  name                 = "fg1-${random_pet.prefix.id}-subnet"
   virtual_network_name = azurerm_virtual_network.default.name
   resource_group_name  = azurerm_resource_group.default.name
   address_prefixes     = ["10.1.0.0/16"]      
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
-  name                = "${random_pet.prefix.id}-aks"
+  name                = "fg1-${random_pet.prefix.id}-aks"
   location            = var.location.value
   resource_group_name = azurerm_resource_group.default.name
   kubernetes_version = "1.22.15"
-  dns_prefix          = "${random_pet.prefix.id}-k8s"
+  dns_prefix          = "fg1-${random_pet.prefix.id}-k8s"
 
   default_node_pool {
     name            = "default"
@@ -48,6 +48,6 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   tags = {
     Environment = "Prod"
-    owner       = "mariorui"
+    owner       = "fgisiger"
   }
 }
